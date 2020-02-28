@@ -4,12 +4,14 @@ import requests
 import csv
 import os
 import json
+from dotenv import load_dotenv
 
 #Adapted from Shopping Cart project
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
-symbol = 
+load_dotenv()
+symbol = "MSFT"
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
