@@ -18,7 +18,12 @@ parsed_respose = json.loads(response.text)
 
 last_refreshed = parsed_respose["Meta Data"]["3. Last Refreshed"]
 
-latest_close = parsed_respose["Time Series (Daily)"]["2020-02-27"]["4. close"]
+tsd = parsed_respose["Time Series (Daily)"]
+dates = list(tsd.keys())
+
+latest_day = dates[0]
+
+latest_close = tsd[latest_day]["4. close"]
 
 print("-------------------------")
 print("SELECTED SYMBOL: XYZ")
