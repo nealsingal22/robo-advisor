@@ -11,19 +11,22 @@ def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
 load_dotenv()
-symbol = "MSFT"
-api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 
-request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
-response = requests.get(request_url)
-print(response.status_code)
-print(response.request)
-print(response.text)
-
-#parse into dictionary object
-parsed_respose = json.loads(response.text)
-
-last_refreshed = parsed_respose["Meta Data"]["3. Last Refreshed"]
+#While loop adapted from https://github.com/ashishpatel310/Robo-Advisor-Project/blob/master/app/robo_advisor.py
+while True:
+    try:
+        symbol = input('Please enter a valid stock ticker (ex. MSFT): ')
+        api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
+        request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
+        response = requests.get(request_url)
+        #parse into dictionary object
+        parsed_respose = json.loads(response.text)
+        last_refreshed = parsed_respose["Meta Data"]["3. Last Refreshed"]
+    except KeyError:
+        print("Sorry, that is not a valid ticker. Please try again!")
+        continue
+    else:
+        break
 
 tsd = parsed_respose["Time Series (Daily)"]
 dates = list(tsd.keys())
