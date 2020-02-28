@@ -1,6 +1,8 @@
 # app/robo_advisor.py
 
 import requests
+import csv
+import os
 import json
 
 #Adapted from Shopping Cart project
@@ -51,5 +53,12 @@ print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
 print("-------------------------")
+print("WRITING DATA TO CSV")
+print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
+
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "prices.csv")
+with open(csv_file_path, "w") as csv_file:
+    writer = csv.DictWriter(csv_file, fieldnames=["city","name"])
+    writer.writeheader()
