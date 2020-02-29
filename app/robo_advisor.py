@@ -6,6 +6,7 @@ import os
 import json
 import datetime
 from dotenv import load_dotenv
+import matplotlib.pyplot as plt
 
 #Adapted from Shopping Cart project
 def to_usd(my_price):
@@ -98,3 +99,20 @@ print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
 
+#Further Exploration: Create a Data Visualization
+reversed_dates = dates.reverse()
+reversed_prices = dates.reverse()
+
+closing_prices = []
+
+for date in dates:
+    close_price = tsd[date]["4. close"]
+    closing_prices.append(float(close_price))
+
+#Adapted from https://medium.com/@pknerd/data-visualization-in-python-line-graph-in-matplotlib-9dfd0016d180
+plt.plot(dates, closing_prices, color='orange')
+plt.xlabel('Date')
+plt.ylabel('Closing Price ($)')
+plt.xticks(dates, rotation=90, fontsize=4)
+plt.title('Closing prices of ' +symbol+ ' stock')
+plt.show()
