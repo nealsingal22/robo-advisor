@@ -58,6 +58,33 @@ for date in dates:
 recent_high = max(high_prices)
 recent_low = min(low_prices)
 
+#Evaluating whether or not to buy a stock
+def buy_recommendation(low, high, current):
+    average = (low + high) / 2
+    threshold = average * 1.2
+    if (float(current) < threshold):
+        return True
+    else:
+        return False
+
+recommendation = buy_recommendation(recent_low, recent_high, latest_close)
+
+def rec(recommendation):
+    if recommendation:
+        return "Buy, buy, buy"
+    else:
+        return "Not a good time to buy"
+
+def explanation(low, high, current, recommendation):
+    average = (low + high) / 2
+    threshold = average * 1.2
+    if (recommendation):
+        return ("Based off the most recent price of " +to_usd(float(latest_close)) + " and the moving average of " +to_usd(average)
+        + " it would be advisable to buy " + symbol + " as it's below a 20 percent increased threshold of the moving average.")
+    else:
+        return ("Based off the most recent price of " +to_usd(float(latest_close)) + " and the moving average of " +to_usd(average)
+        + " it wouldn't be advisable to buy " + symbol + " as it's above a 20 percent increased threshold of the moving average.")
+
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "prices.csv")
 csv_headers = ["timestamp", "open", "high", "low", "close", "volume"]
 
@@ -91,8 +118,8 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+print("RECOMMENDATION: " +rec(recommendation))
+print("RECOMMENDATION REASON: " +explanation(recent_low, recent_high, latest_close, recommendation))
 print("-------------------------")
 print("WRITING DATA TO CSV")
 print("-------------------------")
@@ -100,9 +127,6 @@ print("HAPPY INVESTING!")
 print("-------------------------")
 
 #Further Exploration: Create a Data Visualization
-reversed_dates = dates.reverse()
-reversed_prices = dates.reverse()
-
 closing_prices = []
 
 for date in dates:
