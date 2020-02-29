@@ -4,6 +4,7 @@ import requests
 import csv
 import os
 import json
+import datetime
 from dotenv import load_dotenv
 
 #Adapted from Shopping Cart project
@@ -12,21 +13,30 @@ def to_usd(my_price):
 
 load_dotenv()
 
-#While loop adapted from https://github.com/ashishpatel310/Robo-Advisor-Project/blob/master/app/robo_advisor.py
+#Adapted from https://stackoverflow.com/questions/19859282/check-if-a-string-contains-a-number
+#Created a preliminary check
+def testTicker(inputString):
+    return any(char.isdigit() for char in inputString) or len(inputString) >=5
+
+#Improved basic while sourced from https://github.com/ashishpatel310/Robo-Advisor-Project/blob/master/app/robo_advisor.py
 while True:
-    try:
-        symbol = input('Please enter a valid stock ticker (ex. MSFT): ')
-        api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
-        request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
-        response = requests.get(request_url)
-        #parse into dictionary object
-        parsed_respose = json.loads(response.text)
-        last_refreshed = parsed_respose["Meta Data"]["3. Last Refreshed"]
-    except KeyError:
-        print("Sorry, that is not a valid ticker. Please try again!")
+    symbol = input('Please enter a valid stock ticker (ex. MSFT): ')
+    if testTicker(symbol):
+        print("Sorry this doesn't seem to be a valid ticker")
         continue
-    else:
-        break
+    else:    
+        try:
+            api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
+            request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
+            response = requests.get(request_url)
+            #parse into dictionary object
+            parsed_respose = json.loads(response.text)
+            last_refreshed = parsed_respose["Meta Data"]["3. Last Refreshed"]
+        except KeyError:
+            print("Sorry, that is not a valid ticker. Please try again!")
+            continue
+        else:
+            break
 
 tsd = parsed_respose["Time Series (Daily)"]
 dates = list(tsd.keys())
@@ -64,11 +74,16 @@ with open(csv_file_path, "w") as csv_file:
             "volume": daily_prices["5. volume"]
         })
 
+# Source Code: https://stackoverflow.com/questions/1759455/how-can-i-account-for-period-am-pm-using-strftime
+now = datetime.datetime.now()
+time = now.strftime("%I:%M %p")
+day = datetime.date.today()
+
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print(f"SELECTED SYMBOL: {symbol.upper()}")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-print("REQUEST AT: 2018-02-20 02:00pm")
+print(f"REQUEST AT: {day} {time}")
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
