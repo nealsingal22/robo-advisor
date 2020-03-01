@@ -2,9 +2,9 @@
 
 ## Prerequsites
 
-Anaconda 3.7
-Python 3.7
-Pip
+*Anaconda 3.7
+*Python 3.7
+*Pip
 
 ## Installation
 Use the GitHub.com online interface to create a new remote project repository called something like "robo-advisor". Also add a "README.md" file during the repo creation process. After this process is complete, you should be able to view the repo on GitHub.com at an address like https://github.com/YOUR_USERNAME/robo-advisor.
