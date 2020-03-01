@@ -2,6 +2,7 @@
 
 ## Prerequsites
 
+Markup: 
 *Anaconda 3.7
 *Python 3.7
 *Pip
@@ -27,7 +28,7 @@ From inside the virtual environment, install package dependencies:
 ```sh
 pip install -r requirements.txt
 ```
-## Setup
+## API Key
 Before using or developing this application, take a moment to obtain an AlphaVantage API Key (e.g. "abc123").
 The link is: https://www.alphavantage.co/support/#api-key
 
